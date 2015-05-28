@@ -21,7 +21,7 @@ BUILD		:=	build
 SOURCES		:=	src
 DATA		:=
 GRAPHICS	:=	gfx
-INCLUDES	:=
+INCLUDES	:=	inc
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -31,6 +31,7 @@ ARCH	:=	-mthumb -mthumb-interwork
 CFLAGS	:=	-g -Wall -O3\
 		-mcpu=arm7tdmi -mtune=arm7tdmi\
  		-fomit-frame-pointer\
+		-Wno-packed-bitfield-compat\
 		-ffast-math \
 		$(ARCH)
 
