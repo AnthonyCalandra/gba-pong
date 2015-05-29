@@ -4,16 +4,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define KEY_A 0x0001
-#define KEY_B 0x0002
-#define KEY_SELECT  0x0004
-#define KEY_START 0x0008
-#define KEY_RIGHT 0x0010
-#define KEY_LEFT  0x0020
-#define KEY_UP  0x0040
-#define KEY_DOWN  0x0080
-#define KEY_R 0x0100
-#define KEY_L 0x0200
+#define KEY_A 0x1
+#define KEY_B 0x2
+#define KEY_SELECT  0x4
+#define KEY_START 0x8
+#define KEY_RIGHT 0x10
+#define KEY_LEFT  0x20
+#define KEY_UP  0x40
+#define KEY_DOWN  0x80
+#define KEY_R 0x100
+#define KEY_L 0x200
 
 static uint32_t current_key = 0;
 static uint32_t previous_key = 0;

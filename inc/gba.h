@@ -10,10 +10,10 @@
 #define MEM_VRAM  0x6000000
 #define OAM 0x7000000
 
-#define REG_DISPCNT (* (volatile uint16_t*) 0x4000000)
-#define REG_DISPSTAT  (* (volatile uint16_t*) 0x4000004)
-#define REG_VCOUNT  (* (volatile uint16_t*) 0x4000006)
-#define REG_KEYINPUT  (* (volatile uint16_t*) 0x40000130)
+#define REG_DISPCNT (* (volatile uint32_t*) 0x4000000)
+#define REG_DISPSTAT  (* (volatile uint32_t*) 0x4000004)
+#define REG_VCOUNT  (* (volatile uint32_t*) 0x4000006)
+#define REG_KEYINPUT  (* (volatile uint32_t*) 0x40000130)
 
 #define VIDEO_BUFFER ((uint16_t*) MEM_VRAM)
 
