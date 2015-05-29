@@ -1,6 +1,8 @@
 #ifndef GBATYPES_H
 #define GBATYPES_H  1
 
+#include <stdint.h>
+
 typedef union
 {
   uint16_t rgb;

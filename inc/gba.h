@@ -2,7 +2,6 @@
 #define GBA_H 1
 
 #include <stdint.h>
-#include <stdbool.h>
 
 #define SCREEN_WIDTH  240
 #define SCREEN_HEIGHT 160

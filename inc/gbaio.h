@@ -1,6 +1,9 @@
 #ifndef GBAIO_H
 #define GBAIO_H 1
 
+#include <stdint.h>
+#include <stdbool.h>
+
 #define KEY_A 0x0001
 #define KEY_B 0x0002
 #define KEY_SELECT  0x0004
