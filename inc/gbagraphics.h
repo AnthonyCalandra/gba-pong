@@ -55,13 +55,13 @@ typedef struct
  */
 typedef struct
 {
-  uint16_t unused[3];
+  uint16_t unused1[3];
   uint16_t rotationDataA;
-  uint16_t unused[3];
+  uint16_t unused2[3];
   uint16_t rotationDataB;
-  uint16_t unused[3];
+  uint16_t unused3[3];
   uint16_t rotationDataC;
-  uint16_t unused[3];
+  uint16_t unused4[3];
   uint16_t rotationDataD;
 } OAMEntryB, RotationData;
 
