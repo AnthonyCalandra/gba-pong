@@ -16,7 +16,7 @@ include $(DEVKITARM)/gba_rules
 # DATA is a list of directories containing data files
 # INCLUDES is a list of directories containing header files
 #---------------------------------------------------------------------------------
-TARGET		:=	bin/cc3k_mb
+TARGET		:=	bin/pong_mb
 BUILD		:=	build
 SOURCES		:=	src
 DATA		:=
