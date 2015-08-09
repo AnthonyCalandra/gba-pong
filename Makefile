@@ -29,10 +29,11 @@ INCLUDES	:=	inc
 ARCH	:=	-mthumb -mthumb-interwork
 
 CFLAGS	:=	-g -Wall -O3\
+		-std=c11\
 		-mcpu=arm7tdmi -mtune=arm7tdmi\
  		-fomit-frame-pointer\
 		-Wno-packed-bitfield-compat\
-		-ffast-math \
+		-ffast-math\
 		$(ARCH)
 
 CFLAGS	+=	$(INCLUDE)
@@ -59,7 +60,6 @@ LIBDIRS	:=	$(LIBGBA)
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
-
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 			$(foreach dir,$(DATA),$(CURDIR)/$(dir))

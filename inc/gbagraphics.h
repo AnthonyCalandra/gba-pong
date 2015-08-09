@@ -3,12 +3,15 @@
 
 #include <stdint.h>
 
+#define SCREEN_WIDTH  240
+#define SCREEN_HEIGHT 160
+
 // Video Memory.
 #define MEM_VRAM  0x6000000
 // Object Attribute Memory (OAM) holds a sprite's attributes. See OAMEntryA.
 #define OAM 0x7000000
 
-/*
+/**
  * The Register Vertical Count keeps track of the current scanline being drawn
  * by the GBA. Note that it includes the VBlank section as well, making the range
  * of vertical_count: [0, 227].
@@ -18,7 +21,7 @@
 #define REG_VCOUNT_ADDR  0x4000006
 #define REG_VCOUNT  (* (volatile uint16_t*) REG_VCOUNT_ADDR)
 
-/*
+/**
  * The Register Display Controller is responsible for the graphical settings
  * of the GBA. The following is a short description of each of its fields:
  *   - [0-2] video_mode: set 0-2 for tiled modes; 3-5 for bitmapped modes.
@@ -33,7 +36,7 @@
 #define REG_DISPCNT_ADDR 0x4000000
 #define REG_DISPCNT (* (volatile uint16_t*) REG_DISPCNT_ADDR)
 
-/*
+/**
  * The Register Display Status contains information related to the drawing status
  * of the GBA. The following is a short description of each of its fields:
  *   - [0] in_vblank: read-only; set high if the GBA is in the VBlank section.
@@ -50,8 +53,10 @@
 
 // Pointer to video memory in 16-bit chunks.
 #define VIDEO_BUFFER ((uint16_t*) MEM_VRAM)
+// Pointer to the mode 4, 256 byte-sized, palette.
+#define M4_PALETTE ((uint16_t*) 0x5000000)
 
-/*
+/**
  * Display modes:
  *   - Modes 0-2: Sprite modes.
  *   - Modes 3-5: Bitmap modes.
@@ -72,7 +77,13 @@
 
 #define SET_DISPLAY_MODE(mode)  (* (volatile uint32_t*) REG_DISPCNT_ADDR) = (mode)
 
-/*
+#define ROTATE_0_DEG  0
+#define ROTATE_90_DEG 1
+#define ROTATE_180_DEG 2
+#define ROTATE_270_DEG 3
+#define ROTATE_360_DEG 0
+
+/**
  * A SpriteAttributes object contains a sprite's attributes such as: coordinates,
  * rotation information, color information, flags, and drawing priorities.
  */
@@ -82,7 +93,7 @@ typedef struct
   uint16_t unused;
 } OAMEntryA, SpriteAttributes;
 
-/*
+/**
  * A RotationData object contains the SpriteAttributes of four different sprites
  * and the rotation data. TODO: complete rotation documentation.
  *
@@ -100,7 +111,7 @@ typedef struct
   uint16_t rotationDataD;
 } OAMEntryB, RotationData;
 
-/*
+/**
  * This function waits until the GBA is in the VBlank region. This is useful
  * for updating graphics as the VBlank region does not draw to the screen;
  * necessary to keep graphics synchronized and to prevent tearing.
@@ -110,5 +121,48 @@ inline void vsync()
   while (REG_VCOUNT >= 160);
   while (REG_VCOUNT < 160);
 }
+
+/**
+ * Return the pixel at the given (x, y) coordinate.
+ */
+inline uint16_t *m4_get_pixel(uint32_t x, uint32_t y)
+{
+  // Divide by 2 since the buffer is storing 2 pixels per index.
+  return &VIDEO_BUFFER[(y * SCREEN_WIDTH + x) >> 1];
+}
+
+/**
+ * Draws a mode 4 pixel.
+ */
+void m4_draw_pixel(uint32_t x, uint32_t y, uint8_t color_index);
+/**
+ * Draws a line from (x0, y0) to (x1, y1) using Bresenham's
+ * line-drawing algorithm.
+ */
+void m4_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index);
+/**
+ * Modified Bresenham algorithm for drawing filled-in circles.
+ */
+void m4_draw_circle_fill(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_index);
+/**
+ * Bresenham algorithm for drawing circles.
+ */
+void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_index);
+/**
+ * Draw a rectangle starting from (x0, y0) to (x1, y1) filled-in.
+ */
+void m4_draw_rect_fill(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index);
+/**
+ * Draw a rectangle starting from (x0, y0) to (x1, y1).
+ */
+void m4_draw_rect(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index);
+/**
+ * Draws a triangle which can also be rotated 90, 180, 270, or 360 degrees.
+ */
+void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint8_t color_index);
+/**
+ * Draws a filled-in triangle which can also be rotated 90, 180, 270, or 360 degrees.
+ */
+ void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint8_t color_index);
 
 #endif

@@ -21,48 +21,48 @@
 
 // Maintain state of the current and previous keys in order to implement
 // key states (is up, is down, held, etc.).
-static uint32_t current_key = 0;
-static uint32_t previous_key = 0;
+uint32_t _current_key = 0;
+uint32_t _previous_key = 0;
 
-/*
+/**
  * This function polls user input synchronously.
  */
 inline void poll_key()
 {
-  previous_key = current_key;
+  _previous_key = _current_key;
   // The bits in the REG_KEYINPUT register is set to high when a key is up and
   // low when a key is down.
-  current_key = ~(REG_KEYINPUT) & 0x3FF;
+  _current_key = ~(REG_KEYINPUT) & 0x3FF;
 }
 
 inline uint32_t current_key_state()
 {
-  return current_key;
+  return _current_key;
 }
 
 inline uint32_t previous_key_state()
 {
-  return previous_key;
+  return _previous_key;
 }
 
 inline bool is_key_down(uint32_t key)
 {
-  return (bool) current_key & key;
+  return (bool) _current_key & key;
 }
 
 inline bool is_key_up(uint32_t key)
 {
-  return (bool) ~(current_key) & key;
+  return (bool) ~(_current_key) & key;
 }
 
 inline bool was_key_down(uint32_t key)
 {
-  return (bool) previous_key & key;
+  return (bool) _previous_key & key;
 }
 
 inline bool was_key_up(uint32_t key)
 {
-  return (bool) ~(previous_key) & key;
+  return (bool) ~(_previous_key) & key;
 }
 
 #endif

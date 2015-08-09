@@ -3,11 +3,9 @@
 
 #include <stdint.h>
 
-#define SCREEN_WIDTH  240
-#define SCREEN_HEIGHT 160
-
 #include "gbatypes.h"
 #include "gbaio.h"
 #include "gbagraphics.h"
+#include "utils.h"
 
 #endif
