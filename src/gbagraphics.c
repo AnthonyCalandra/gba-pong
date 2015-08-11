@@ -1,15 +1,30 @@
 #include <stdlib.h>
 #include "gbatypes.h"
 #include "gbagraphics.h"
-#include "utils.h"
+#include "gbautils.h"
+#include "gbabios.h"
+#include "gbadma.h"
 
-void m4_draw_pixel(uint32_t x, uint32_t y, uint8_t color_index)
+VideoBuffer _video_buffer = M4_PAGE1;
+
+void flip_vid_page()
 {
-  if (!within_screen_bounds(x, y))
+  if (_video_buffer == M4_PAGE1)
   {
-    return;
+    cpu_zero_memory((void*) M4_PAGE2, 0x5DC0);
+    _video_buffer = M4_PAGE2;
+  }
+  else
+  {
+    cpu_zero_memory((void*) M4_PAGE1, 0x5DC0);
+    _video_buffer = M4_PAGE1;
   }
 
+  REG_DISPCNT ^= DISPCNT_TOGGLE_PAGE;
+}
+
+void m4_draw_pixel(uint32_t x, uint32_t y, uint32_t color_index)
+{
   uint16_t *dst = m4_get_pixel(x, y);
   if (x & 1)
   {
@@ -23,7 +38,7 @@ void m4_draw_pixel(uint32_t x, uint32_t y, uint8_t color_index)
   }
 }
 
-void m4_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index)
+void m4_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color_index)
 {
   x0 = CLAMP(x0, 0, SCREEN_WIDTH - 1);
   x1 = CLAMP(x1, 0, SCREEN_WIDTH - 1);
@@ -54,7 +69,7 @@ void m4_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_
   }
 }
 
-void m4_draw_circle_fill(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_index)
+void m4_draw_circle_fill(int32_t x0, int32_t y0, uint32_t radius, uint32_t color_index)
 {
   if (radius < 1)
   {
@@ -83,7 +98,7 @@ void m4_draw_circle_fill(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_
   }
 }
 
-void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_index)
+void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint32_t color_index)
 {
   if (radius < 1)
   {
@@ -116,7 +131,7 @@ void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint8_t color_index
   }
 }
 
-void m4_draw_rect_fill(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index)
+void m4_draw_rect_fill(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color_index)
 {
   uint32_t dx = abs(x1 - x0);
   uint32_t dy = abs(y1 - y0);
@@ -128,7 +143,7 @@ void m4_draw_rect_fill(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t c
   }
 }
 
-void m4_draw_rect(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_index)
+void m4_draw_rect(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color_index)
 {
   m4_draw_line(x0, y0, x1, y0, color_index);
   m4_draw_line(x0, y0, x0, y1, color_index);
@@ -136,7 +151,7 @@ void m4_draw_rect(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color_
   m4_draw_line(x0, y1, x1, y1, color_index);
 }
 
-void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint8_t color_index)
+void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint32_t color_index)
 {
   x = CLAMP(x, 0, SCREEN_WIDTH - 1);
   y = CLAMP(y, 0, SCREEN_HEIGHT - 1);
@@ -162,7 +177,7 @@ void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint
 
   int32_t err = dx - dy;
   m4_draw_pixel(x0, y0, color_index);
-  while (true)
+  while (1)
   {
     int32_t epsilon = err << 1;
     if (epsilon > -dy)
@@ -206,7 +221,7 @@ void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint
   }
 }
 
-void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint8_t color_index)
+void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint32_t color_index)
 {
   x = CLAMP(x, 0, SCREEN_WIDTH - 1);
   y = CLAMP(y, 0, SCREEN_HEIGHT - 1);

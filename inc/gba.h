@@ -6,6 +6,8 @@
 #include "gbatypes.h"
 #include "gbaio.h"
 #include "gbagraphics.h"
-#include "utils.h"
+#include "gbautils.h"
+#include "gbadma.h"
+#include "gbabios.h"
 
 #endif
