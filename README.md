@@ -6,8 +6,13 @@ Simple pong game on the GameBoy Advance.
 
 ## Build instructions
 
-Just run the makefile and it should generate an elf and gba file in the bin directory.  
-You can run the gba file through an emulator or use it to play on the actual GameBoy Advance hardware.
+devkitARM and devkitadv need to be installed. Make sure you export them when running the makefile. On Mac OSX Yosemite you can add the following lines to your `~/.bash_profile`:
+```bash
+export DEVKITPRO=/opt/devkitPro
+export DEVKITARM=/opt/devkitpro/devkitARM
+```
+
+Just run the makefile and it should generate an elf and gba file in the bin directory. You can run the gba file through an emulator or use it to play on the actual GameBoy Advance hardware.
 
 ## Technical Details
 
