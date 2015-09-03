@@ -30,7 +30,7 @@ ARCH	:=
 
 CFLAGS	:=	-g -Wall -O3\
 		-std=c11\
-		-mcpu=arm7tdmi -mtune=arm7tdmi\
+		-mcpu=arm7tdmi -mtune=arm7tdmi -mthumb\
  		-fomit-frame-pointer\
 		-Wno-packed-bitfield-compat\
 		-ffast-math\

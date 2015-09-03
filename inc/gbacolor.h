@@ -1,5 +1,5 @@
-#ifndef GBATYPES_H
-#define GBATYPES_H  1
+#ifndef GBACOLOR_H
+#define GBACOLOR_H  1
 
 #include <stdint.h>
 

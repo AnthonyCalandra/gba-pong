@@ -1,3 +1,27 @@
 # gba-pong
 
-Simple pong game on the GameBoy Advance
+Simple pong game on the GameBoy Advance.
+
+![Pong screen](http://anthony-calandra.com/downloads/gba.jpg "Pong screen")
+
+## Technical Details
+
+- Bitmap-based in mode 4.
+- Uses the GBA's page flipping capabilities.
+- Uses a CpuFastSet implementation for fast page clearing.
+- Basic font system.
+
+## TODOs and FIXMEs
+
+- Need to complete vsync2 as an improvement to vsync.
+- Better collision-detection.
+- A more complete gba_printf implementation.
+- Use this as a base for a GBA library.
+
+## Author
+
+Anthony Calandra
+
+## License
+
+MIT

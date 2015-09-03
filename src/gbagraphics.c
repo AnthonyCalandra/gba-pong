@@ -1,9 +1,11 @@
 #include <stdlib.h>
-#include "gbatypes.h"
+#include <string.h>
+#include "gbacolor.h"
 #include "gbagraphics.h"
 #include "gbautils.h"
 #include "gbabios.h"
 #include "gbadma.h"
+#include "gbaio.h"
 
 VideoBuffer _video_buffer = M4_PAGE1;
 
@@ -11,12 +13,12 @@ void flip_vid_page()
 {
   if (_video_buffer == M4_PAGE1)
   {
-    cpu_zero_memory((void*) M4_PAGE2, 0x5DC0);
+    cpu_zero_memory((void*) M4_PAGE2, 0x2580);
     _video_buffer = M4_PAGE2;
   }
   else
   {
-    cpu_zero_memory((void*) M4_PAGE1, 0x5DC0);
+    cpu_zero_memory((void*) M4_PAGE1, 0x2580);
     _video_buffer = M4_PAGE1;
   }
 
@@ -76,8 +78,8 @@ void m4_draw_circle_fill(int32_t x0, int32_t y0, uint32_t radius, uint32_t color
     return;
   }
 
-  uint32_t x = radius;
-  uint32_t y = 0;
+  int32_t x = radius;
+  int32_t y = 0;
   int32_t decisionOver2 = 1 - x;
   while (x >= y)
   {
@@ -105,8 +107,8 @@ void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint32_t color_inde
     return;
   }
 
-  uint32_t x = radius;
-  uint32_t y = 0;
+  int32_t x = radius;
+  int32_t y = 0;
   int32_t decisionOver2 = 1 - x;
   while (x >= y)
   {
@@ -133,10 +135,10 @@ void m4_draw_circle(int32_t x0, int32_t y0, uint32_t radius, uint32_t color_inde
 
 void m4_draw_rect_fill(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color_index)
 {
-  uint32_t dx = abs(x1 - x0);
-  uint32_t dy = abs(y1 - y0);
-  uint32_t x = (x0 < x1) ? x0 : x1;
-  uint32_t y = (y0 < y1) ? y0 : y1;
+  int32_t dx = abs(x1 - x0);
+  int32_t dy = abs(y1 - y0);
+  int32_t x = (x0 < x1) ? x0 : x1;
+  int32_t y = (y0 < y1) ? y0 : y1;
   for (dy++; dy > 0; dy--, y++)
   {
     m4_draw_line(x, y, x + dx, y, color_index);
@@ -156,7 +158,7 @@ void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint
   x = CLAMP(x, 0, SCREEN_WIDTH - 1);
   y = CLAMP(y, 0, SCREEN_HEIGHT - 1);
 
-  uint32_t x0 = x, y0 = y, x1, y1;
+  int32_t x0 = x, y0 = y, x1, y1;
   int32_t dx, dy, sx, sy;
   if (rot == ROTATE_270_DEG || rot == ROTATE_90_DEG)
   {
@@ -226,7 +228,7 @@ void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height,
   x = CLAMP(x, 0, SCREEN_WIDTH - 1);
   y = CLAMP(y, 0, SCREEN_HEIGHT - 1);
 
-  uint32_t x0 = x, y0 = y, x1, y1;
+  int32_t x0 = x, y0 = y, x1, y1;
   int32_t dx, dy, sx, sy;
   if (rot == ROTATE_270_DEG || rot == ROTATE_90_DEG)
   {
@@ -269,5 +271,30 @@ void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height,
     {
       m4_draw_line((x0 << 1) - x, y, x, y, color_index);
     }
+  }
+}
+
+void m4_puts(int32_t x, int32_t y, TextWriter* gptxt, const char* str, uint8_t color_index)
+{
+  unsigned char c;
+  while ((c = *str++) != 0)
+  {
+    int32_t ix, iy;
+    // Point to glyph; each row is one byte.
+    uint8_t *pch = (uint8_t*) &gptxt->font[gptxt->char_map[c] << 1];
+    for (iy = 0; iy < 8; iy++)
+    {
+      uint32_t row = pch[iy];
+      // Plot pixels until row-byte is empty
+      for (ix = x; row > 0; row >>= 1, ix++)
+      {
+        if (row & 1)
+        {
+          m4_draw_pixel(ix + x, iy + y, color_index);
+        }
+      }
+    }
+
+    x += gptxt->dx;
   }
 }

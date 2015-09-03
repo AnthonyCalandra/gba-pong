@@ -2,6 +2,7 @@
 #define GBAGRAPHICS_H 1
 
 #include <stdint.h>
+#include "gbaio.h"
 
 #define SCREEN_WIDTH  240
 #define SCREEN_HEIGHT 160
@@ -96,37 +97,11 @@ typedef volatile uint16_t* VideoBuffer;
 extern VideoBuffer _video_buffer;
 
 /**
- * A SpriteAttributes object contains a sprite's attributes such as: coordinates,
- * rotation information, color information, flags, and drawing priorities.
- */
-typedef struct
-{
-  uint16_t attributes[3];
-  uint16_t unused;
-} OAMEntryA, SpriteAttributes;
-
-/**
- * A RotationData object contains the SpriteAttributes of four different sprites
- * and the rotation data. TODO: complete rotation documentation.
- *
- * A RotationData object is equivalent to four SpriteAttribute objects in memory.
- */
-typedef struct
-{
-  uint16_t unused1[3];
-  uint16_t rotationDataA;
-  uint16_t unused2[3];
-  uint16_t rotationDataB;
-  uint16_t unused3[3];
-  uint16_t rotationDataC;
-  uint16_t unused4[3];
-  uint16_t rotationDataD;
-} OAMEntryB, RotationData;
-
-/**
  * This function waits until the GBA is in the VBlank region. This is useful
  * for updating graphics as the VBlank region does not draw to the screen;
  * necessary to keep graphics synchronized and to prevent tearing.
+ *
+ * TODO: This is a waste of battery. Use vsync2 for proper video syncing.
  */
 inline void vsync()
 {
@@ -142,6 +117,7 @@ inline uint16_t* m4_get_pixel(uint32_t x, uint32_t y)
   // Divide by 2 since the buffer is storing 2 pixels per index.
   return (uint16_t*) &_video_buffer[(y * SCREEN_WIDTH + x) >> 1];
 }
+
 /**
  * Flip between page 1 located at MEM_VRAM or page 2 at MEM_VRAM + 0xA000.
  * While flipping, clear the old page from two frames ago.
@@ -179,6 +155,10 @@ void m4_draw_triangle(int32_t x, int32_t y, uint32_t base, uint32_t height, uint
 /**
  * Draws a filled-in triangle which can also be rotated 90, 180, 270, or 360 degrees.
  */
- void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint32_t color_index);
+void m4_draw_triangle_fill(int32_t x, int32_t y, uint32_t base, uint32_t height, uint32_t rot, uint32_t color_index);
+/**
+ * Print a string to the canvas. Credit to TONC for the original code.
+ */
+void m4_puts(int32_t x, int32_t y, TextWriter* gptxt, const char* str, uint8_t color_index);
 
 #endif

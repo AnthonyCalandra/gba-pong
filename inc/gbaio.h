@@ -92,4 +92,41 @@ inline uint32_t is_key_hit(uint32_t key)
   return (_current_key & ~(_previous_key)) & key;
 }
 
+/**
+ * Credit to TONC for the font system.
+ */
+typedef struct
+{
+  volatile uint16_t* dst;
+  uint32_t* font;
+  uint8_t* char_map;
+  uint8_t* char_width;
+  int8_t dx, dy;
+  uint16_t flags;
+} TextWriter;
+
+extern uint8_t txt_lut[256];
+extern TextWriter* gptxt;
+
+/**
+ * Initializes the font and text writer. Use free_text_writer to free the
+ * memory allocated by this function.
+ */
+void initialize_text_writer();
+/**
+ * Similar to printf in the C Standard Library, with the exception that it prints
+ * to the game canvas.
+ * @param x The x coordinate to begin drawing.
+ * @param y The y coordinate to begin drawing.
+ * @param color_index The color located at the index in the palette table to use.
+ * @param format The string format; same as the Standard Library's printf format.
+ * @param ... Arguments to the format.
+ */
+void gba_printf(int32_t x, int32_t y, uint8_t color_index, const char* format, ...);
+/**
+ * Frees the font and text writer memory. Should always be called before the
+ * game ends.
+ */
+void free_text_writer();
+
 #endif

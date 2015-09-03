@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "gbatypes.h"
+#include "gbacolor.h"
 #include "gbaio.h"
 #include "gbagraphics.h"
 #include "gbautils.h"

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "gbadma.h"
 
-void dma_zero_memory(void* dst, uint16_t len)
+void dma_zero_memory(void* dst, uint32_t len)
 {
   volatile void* src = REG_DMA_SRC;
   volatile void* dma_dst = REG_DMA_DST;
