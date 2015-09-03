@@ -4,6 +4,11 @@ Simple pong game on the GameBoy Advance.
 
 ![Pong screen](http://anthony-calandra.com/downloads/gba.jpg "Pong screen")
 
+## Build instructions
+
+Just run the makefile and it should generate an elf and gba file in the bin directory.  
+You can run the gba file through an emulator or use it to play on the actual GameBoy Advance hardware.
+
 ## Technical Details
 
 - Bitmap-based in mode 4.
