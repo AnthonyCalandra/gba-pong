@@ -11,15 +11,15 @@ VideoBuffer _video_buffer = M4_PAGE1;
 
 void flip_vid_page()
 {
-  if (_video_buffer == M4_PAGE1)
+  if (_video_buffer == (uint16_t*) M4_PAGE1)
   {
-    cpu_zero_memory((void*) M4_PAGE2, 0x2580);
-    _video_buffer = M4_PAGE2;
+    cpu_zero_memory(M4_PAGE2, M4_PAGE_SIZE_IN_WORDS);
+    _video_buffer = (uint16_t*) M4_PAGE2;
   }
   else
   {
-    cpu_zero_memory((void*) M4_PAGE1, 0x2580);
-    _video_buffer = M4_PAGE1;
+    cpu_zero_memory(M4_PAGE1, M4_PAGE_SIZE_IN_WORDS);
+    _video_buffer = (uint16_t*) M4_PAGE1;
   }
 
   REG_DISPCNT ^= DISPCNT_TOGGLE_PAGE;

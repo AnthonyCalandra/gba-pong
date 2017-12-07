@@ -15,7 +15,7 @@ typedef struct {
  * @param y Their starting y coordinate.
  * @return The player object.
  */
-Player* create_player(uint32_t x, uint32_t y);
+Player create_player(uint32_t x, uint32_t y);
 /**
  * Set a player's x coordinate.
  * @param p The player.

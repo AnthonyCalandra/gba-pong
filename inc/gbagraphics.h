@@ -42,8 +42,9 @@
 #define REG_DISPCNT_ADDR 0x4000000
 #define REG_DISPCNT (* (volatile uint16_t*) REG_DISPCNT_ADDR)
 #define DISPCNT_TOGGLE_PAGE 16
-#define M4_PAGE1 ((volatile uint16_t*) 0x6000000)
-#define M4_PAGE2 ((volatile uint16_t*) 0x600A000)
+#define M4_PAGE1 ((void*) 0x6000000)
+#define M4_PAGE2 ((void*) 0x600A000)
+#define M4_PAGE_SIZE_IN_WORDS (0x2800)
 
 /**
  * The Register Display Status contains information related to the drawing status
@@ -101,7 +102,7 @@ extern VideoBuffer _video_buffer;
  * for updating graphics as the VBlank region does not draw to the screen;
  * necessary to keep graphics synchronized and to prevent tearing.
  *
- * TODO: This is a waste of battery. Use vsync2 for proper video syncing.
+ * This is a waste of battery. Use VBlankIntrWait for proper video syncing.
  */
 inline void vsync()
 {

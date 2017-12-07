@@ -9,5 +9,6 @@
 #include "gbautils.h"
 #include "gbadma.h"
 #include "gbabios.h"
+#include "gbainterrupt.h"
 
 #endif

@@ -3,10 +3,10 @@
 #include "ball.h"
 #include "config.h"
 
-Ball* create_ball(uint32_t x, uint32_t y)
+Ball create_ball(uint32_t x, uint32_t y)
 {
-  Ball* ball = (Ball*) malloc(sizeof(Ball));
-  set_default_ball_params(ball, x, y);
+  Ball ball;
+  set_default_ball_params(&ball, x, y);
   return ball;
 }
 

@@ -16,7 +16,7 @@ typedef struct {
  * @param y The y coordinate.
  * @return The new game ball.
  */
-Ball* create_ball(uint32_t x, uint32_t y);
+Ball create_ball(uint32_t x, uint32_t y);
 /**
  * Set some parameters on the game ball.
  * @param ball Pointer to the game ball.

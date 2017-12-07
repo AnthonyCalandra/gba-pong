@@ -124,6 +124,7 @@ void show_title_screen()
 
 int main()
 {
+  register_vblank_isr();
   initialize_text_writer();
   srand(RAND_SEED);
   REG_DISPCNT = DCNT_BG2 | DCNT_MODE4;
@@ -136,44 +137,38 @@ int main()
 
   show_title_screen();
 
-  Player* player = create_player(PADDLE_PLAYER_X, PADDLE_PLAYER_Y);
-  Player* computer = create_player(PADDLE_COMP_X, PADDLE_COMP_Y);
-  Ball* ball = create_ball(SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
+  Player player = create_player(PADDLE_PLAYER_X, PADDLE_PLAYER_Y);
+  Player computer = create_player(PADDLE_COMP_X, PADDLE_COMP_Y);
+  Ball ball = create_ball(SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
   while (1)
   {
-    vsync();
+    vblank_intr_wait();
     poll_key();
-    ball->x += ball->dx;
-    ball->y += ball->dy;
+    ball.x += ball.dx;
+    ball.y += ball.dy;
     // This random formula I just made up seems to be good enough...
-    set_paddle_y(computer, (uint32_t) (ball->y + 10) * 0.75);
+    set_paddle_y(&computer, (uint32_t) (ball.y + 10) * 0.75);
     if (is_key_down(KEY_DOWN))
     {
-      set_paddle_y(player, player->y + PLAYER_SPEED);
+      set_paddle_y(&player, player.y + PLAYER_SPEED);
     }
     else if (is_key_down(KEY_UP))
     {
-      set_paddle_y(player, player->y - PLAYER_SPEED);
+      set_paddle_y(&player, player.y - PLAYER_SPEED);
     }
 
-    check_collisions(player, computer, ball);
+    check_collisions(&player, &computer, &ball);
     if (restart)
     {
-      set_default_ball_params(ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
+      set_default_ball_params(&ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
       restart = false;
     }
 
     // Flip current page so we can begin drawing!
     flip_vid_page();
-    draw(player, computer, ball);
+    draw(&player, &computer, &ball);
   }
 
-  free(player);
-  free(computer);
-  free(ball);
-  player = NULL;
-  computer = NULL;
-  ball = NULL;
   free_text_writer();
   return 0;
 }

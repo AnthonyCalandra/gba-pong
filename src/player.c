@@ -4,12 +4,12 @@
 #include "config.h"
 #include "player.h"
 
-Player* create_player(uint32_t x, uint32_t y)
+Player create_player(uint32_t x, uint32_t y)
 {
-  Player* p = (Player*) malloc(sizeof(Player));
-  p->x = x;
-  p->y = y;
-  p->score = 0;
+  Player p;
+  p.x = x;
+  p.y = y;
+  p.score = 0;
   return p;
 }
 
