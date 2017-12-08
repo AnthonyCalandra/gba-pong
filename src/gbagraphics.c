@@ -25,7 +25,7 @@ void flip_vid_page()
   REG_DISPCNT ^= DISPCNT_TOGGLE_PAGE;
 }
 
-void m4_draw_pixel(uint32_t x, uint32_t y, uint32_t color_index)
+void m4_draw_pixel(int32_t x, int32_t y, uint32_t color_index)
 {
   uint16_t *dst = m4_get_pixel(x, y);
   if (x & 1)

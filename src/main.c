@@ -139,7 +139,7 @@ int main()
 
   Player player = create_player(PADDLE_PLAYER_X, PADDLE_PLAYER_Y);
   Player computer = create_player(PADDLE_COMP_X, PADDLE_COMP_Y);
-  Ball ball = create_ball(SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
+  Ball ball = create_ball();
   while (1)
   {
     vblank_intr_wait();
@@ -160,7 +160,7 @@ int main()
     check_collisions(&player, &computer, &ball);
     if (restart)
     {
-      set_default_ball_params(&ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1);
+      set_default_ball_params(&ball);
       restart = false;
     }
 

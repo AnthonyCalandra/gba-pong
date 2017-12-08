@@ -2,19 +2,19 @@
 #include <stdint.h>
 #include "ball.h"
 #include "config.h"
+#include "gbagraphics.h"
 
-Ball create_ball(uint32_t x, uint32_t y)
+Ball create_ball()
 {
   Ball ball;
-  set_default_ball_params(&ball, x, y);
+  set_default_ball_params(&ball);
   return ball;
 }
 
-void set_default_ball_params(Ball* ball, uint32_t x, uint32_t y)
+void set_default_ball_params(Ball* ball)
 {
-  ball->x = x;
-  ball->y = y;
-  // FIXME: % is SLOW!!!
+  ball->x = SCREEN_WIDTH >> 1;
+  ball->y = SCREEN_HEIGHT >> 1;
   ball->dx = (rand() % 3 + 1);
   ball->dy = (rand() % 3 + 1);
   // Randomly select a side.

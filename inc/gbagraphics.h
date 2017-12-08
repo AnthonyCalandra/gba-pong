@@ -113,7 +113,7 @@ inline void vsync()
 /**
  * Return the pixel at the given (x, y) coordinate.
  */
-inline uint16_t* m4_get_pixel(uint32_t x, uint32_t y)
+inline uint16_t* m4_get_pixel(int32_t x, int32_t y)
 {
   // Divide by 2 since the buffer is storing 2 pixels per index.
   return (uint16_t*) &_video_buffer[(y * SCREEN_WIDTH + x) >> 1];
@@ -127,7 +127,7 @@ void flip_vid_page();
 /**
  * Draws a mode 4 pixel.
  */
-void m4_draw_pixel(uint32_t x, uint32_t y, uint32_t color_index);
+void m4_draw_pixel(int32_t x, int32_t y, uint32_t color_index);
 /**
  * Draws a line from (x0, y0) to (x1, y1) using Bresenham's
  * line-drawing algorithm.
