@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+#include "macros.h"
 #include "gbacolor.h"
 #include "gbaio.h"
 #include "gbagraphics.h"

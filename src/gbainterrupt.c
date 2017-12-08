@@ -1,8 +1,9 @@
 #include <string.h>
+#include "macros.h"
 #include "gbainterrupt.h"
 #include "gbagraphics.h"
 
-__attribute__((__target__("arm"))) void vblankintrwait_isr() {
+ARM void vblankintrwait_isr() {
     // Acknowledge we have handled the interrupt.
     REG_IF = IE_VBLANK_INTERRUPT;
     REG_IFBIOS |= IE_VBLANK_INTERRUPT;

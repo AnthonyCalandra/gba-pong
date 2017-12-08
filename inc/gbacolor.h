@@ -2,6 +2,7 @@
 #define GBACOLOR_H  1
 
 #include <stdint.h>
+#include "macros.h"
 
 /**
  * The GBA stores red, green, and blue color components as 5-bits each and in
@@ -17,7 +18,7 @@ typedef union
     uint8_t green : 5;
     uint8_t blue : 5;
     uint8_t unused : 1;
-  } __attribute__((packed));
+  } PACKED;
 } RGB16;
 
 /**
