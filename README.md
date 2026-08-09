@@ -1,3 +1,5 @@
+
+
 # gba-pong
 
 Simple pong game on the GameBoy Advance.
@@ -13,6 +15,11 @@ export DEVKITARM=/opt/devkitPro/devkitARM
 ```
 
 Just run the makefile and it should generate an elf and gba file in the bin directory. You can run the gba file through an emulator or use it to play on the actual GameBoy Advance hardware.
+
+## Controls
+
+- **Up/Down**: Move your paddle.
+- **Start**: Begin the game.
 
 ## Technical Details
 
